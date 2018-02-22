@@ -36,36 +36,45 @@ var myChart = new Chart(ctx, {
     });
 
 $("form").submit(function(event) {
-  event.preventDefault();
-//show initial data in chart
-  function showValues() {
-    var fields = $(":input").serializeArray();
-    //console.log(fields);
-    $("#results").empty();
-    jQuery.each( fields, function( i, field ) {
-      $("#results").append( field.value + " " );
-    });
+    event.preventDefault();
+    //show initial data in chart
+    //append date to log entry
+    new Date($.now());
+    var dt = new Date();
+    var time =  + dt.getDate() + "/"
+                + (dt.getMonth()+1)  + "/"
+                + dt.getFullYear() + " @ "
+                + dt.getHours() + ":"
+                + dt.getMinutes() + ":"
+                + dt.getSeconds();
 
-    var data = $('#a').append( fields[0].value + " " + fields[1].value + " " + fields[2].value + " "
-        + fields[3].value + " " + fields[4].value + " ").html();
-
-    console.log(data);
-  }
-//update the chart with new form data
-function addData(chart, label, data) {
-    console.log("update");
-    /*HILFE http://www.chartjs.org/docs/latest/developers/updates.html
-    chart.data.labels.push(label);
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(data);
-    });
-    chart.update();*/
+    function showValues() {
+        var fields = $(":input").serializeArray();
+        $(".deleterow").on('click', function(event){
+            event.preventDefault();
+            $(this).closest('div').remove();
+        });
+        $("#results").empty();
+        /*jQuery.each( fields, function( i, field ) {
+            $("#results").append( field.value + " " + time + " ");
+        });*/
+        var data = $('#a').append( "<div>" + fields[0].value + " " + fields[1].value + " " + fields[2].value + " "
+            + fields[3].value + " " + fields[4].value + " " + time
+            + " <input type='button' class='deleterow btn' value='x'/></div>").html();
     }
-  //$("select").change( showValues );
-  showValues();
-  addData();
+    //update the chart with new form data
+    function addData(chart, label, data) {
+        /*HILFE http://www.chartjs.org/docs/latest/developers/updates.html
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(data);
+        });
+        chart.update();*/
+    }
 
-
+//$("select").change( showValues );
+showValues();
+addData();
 });
 
 
